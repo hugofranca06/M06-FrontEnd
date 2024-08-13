@@ -4,6 +4,24 @@ import React, { useState, useContext } from "react";
 import { PostAssistencia } from "../shared/interfaces";
 import axios from "axios";
 import { AppContext } from "../context/AppContext";
+import LogoComponent from "./LogoComponent";
+
+const generateTimeOptions = () => {
+  const options = [];
+
+  for (let hours = 0; hours < 24; hours++) {
+    for (let minutes = 0; minutes < 60; minutes += 30) {
+      const formattedHours = hours.toString().padStart(2, '0');
+      const formattedMinutes = minutes.toString().padStart(2, '0');
+      options.push(`${formattedHours}:${formattedMinutes}`);
+    }
+  }
+
+  return options;
+};
+
+const opcoesHora = generateTimeOptions();
+
 
 const CadastrarAssistencia: React.FC = () => {
   const { refreshData } = useContext(AppContext);
@@ -15,7 +33,7 @@ const CadastrarAssistencia: React.FC = () => {
 
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
-  const handleAssistenciaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAssistenciaChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const {name, value} = e.target;
     setPostAssistencias(prevState => ({
       ...prevState, 
@@ -35,8 +53,11 @@ const CadastrarAssistencia: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="container">
+      <LogoComponent />
       <h2>Cadastrar Assistência</h2>
+      <div className="form-container-agendar">
+
       <form onSubmit={handleAssistenciaSubmit}>
         <div>
           <label>
@@ -45,19 +66,30 @@ const CadastrarAssistencia: React.FC = () => {
           </label>
         </div>
         <div>
-          <label>
-            Início de expediente: 
-            <input type="time" name='inicioExpediente' value={postAssistencia.inicioExpediente} required onChange={handleAssistenciaChange}/>
-          </label>
-        </div>
-        <div>
-          <label>
-            Fim de expediente: 
-            <input type="time" name='fimExpediente' value={postAssistencia.fimExpediente} required onChange={handleAssistenciaChange}/>
-          </label>
-        </div>
+            <label>
+              Início de expediente: 
+              <select name='inicioExpediente' value={postAssistencia.inicioExpediente} required onChange={handleAssistenciaChange}>
+                <option value="">Selecione</option>
+                {opcoesHora.map((time, index) => (
+                  <option key={index} value={time}>{time}</option>
+                ))}
+              </select>
+            </label>
+          </div>
+          <div>
+            <label>
+              Fim de expediente: 
+              <select name='fimExpediente' value={postAssistencia.fimExpediente} required onChange={handleAssistenciaChange}>
+                <option value="">Selecione</option>
+                {opcoesHora.map((time, index) => (
+                  <option key={index} value={time}>{time}</option>
+                ))}
+              </select>
+            </label>
+          </div>
         <button type="submit">Cadastrar Assistência</button>
       </form>
+      </div>
       {message && <div className={`message ${message.type}`}>{message.text}</div>}
     </div>
   );

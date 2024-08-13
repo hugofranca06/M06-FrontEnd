@@ -4,6 +4,7 @@ import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import Agendar from './Agendar';
 import { AppContext } from '../context/AppContext';
+import LogoComponent from './LogoComponent';
 
 const Cliente: React.FC = () => {
   const { refreshData } = useContext(AppContext);
@@ -30,46 +31,65 @@ const Cliente: React.FC = () => {
     try {
       await axios.delete(`http://localhost:8080/agendamentos/${idAgendamento}`);
       setMessage({ type: 'success', text: 'Agendamento cancelado com sucesso' });
-      setAgendamento(null);
+      setAgendamentosPorCpf(prevAgendamentos =>
+        prevAgendamentos.filter(agendamento => agendamento.idAgendamento !== idAgendamento)
+        );
+        setAgendamento(null);
       refreshData();
     } catch (error) {
-      setMessage({ type: 'error', text: 'Erro ao cancelar agendamento' });
+      setMessage({ type: 'error', text: 'Agendamento não encontrado' });
     }
   };
 
+  const formatDate = (isoString:string) => {
+    const date = new Date(isoString);
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+    return date.toLocaleDateString('pt-BR', options);
+  };
 
 
   return (
-    <div>
+    <div className='container'>
+      <LogoComponent />
       <h2>Painel do Cliente</h2>
-      <nav>
-        <button onClick={() => setActiveSubTab('novoAgendamento')}>Novo Agendamento</button>
-        <button onClick={() => setActiveSubTab('cancelarAgendamento')}>Cancelar Agendamento</button>
-        <button onClick={() => setActiveSubTab('buscarAgendamento')}>Buscar Agendamento por CPF</button>
+      
+      <nav className='sub-aba'>
+        <button onClick={() => setActiveSubTab('novoAgendamento')} className='sub-menu'>Novo Agendamento</button>
+        <button onClick={() => setActiveSubTab('cancelarAgendamento')} className='sub-menu'>Cancelar Agendamento</button>
+        <button onClick={() => setActiveSubTab('buscarAgendamento')} className='sub-menu'>Meus Agendamentos</button>
       </nav>
 
       {activeSubTab === 'novoAgendamento' && <Agendar />}
 
       {activeSubTab === 'cancelarAgendamento' && (
-        <div>
+        <div className='card-t'>
         <h3>Cancelar Agendamento por CPF</h3>
+        <div className='form-container'>
+
         <input 
           type="text" 
           placeholder="Digite o CPF"
           value={cpf}
           onChange={(e) => setCpf(e.target.value)}
-        />
+          />
         <button onClick={handleBuscarAgendamento}>Buscar</button>
+          </div>
+        <div className='card-container'>
+          {message && <div className={`message ${message.type}`}>{message.text}</div>}
         {agendamentosPorCpf.map(agendamento => (
-          <div key={agendamento.idAgendamento}>
-            <p>Agendamento encontrado:</p>
-            <p>ID: {agendamento.idAgendamento}</p>
-            <p>Data: {agendamento.horario}</p>
-            <p>Assistência: {agendamento.assistencia.nome}</p>
-            <p>Equipamento: {agendamento.equipamento}</p>
-            <button onClick={() => handleCancelarAgendamento(agendamento.idAgendamento)}>Cancelar</button>
+          <div key={agendamento.idAgendamento} className='card'>
+            <div className='botao-cancelar'>
+            <button onClick={() => handleCancelarAgendamento(agendamento.idAgendamento)}>
+              <i className='fas fa-ban'></i>
+            </button>
+            </div>
+            <p className='card-title'>ID: {agendamento.idAgendamento}</p>
+            <p className='card-text'>Data: {formatDate(agendamento.horario)}</p>
+            <p className='card-text'>Assistência: {agendamento.assistencia.nome}</p>
+            <p className='card-text'>Equipamento: {agendamento.equipamento}</p>
           </div>
         ))}
+        </div>
       </div>
       )}
 
@@ -91,7 +111,9 @@ const Cliente: React.FC = () => {
               <p>Equipamento: {agendamento.equipamento}</p>
             </div>
           ))}
+          {message && <div className={`message ${message.type}`}>{message.text}</div>}
         </div>
+        
       )}
 
       {message && <div className={`message ${message.type}`}>{message.text}</div>}

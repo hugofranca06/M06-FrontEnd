@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { PostAgendamento , HorarioOption, Assistencia } from "../shared/interfaces";
 import axios from "axios";
+import LogoComponent from "./LogoComponent";
 
 // Defina as opções de equipamentos como uma constante
 const EQUIPAMENTOS = [
@@ -13,6 +14,8 @@ const EQUIPAMENTOS = [
   { value: 'MICROONDAS', label: 'MICROONDAS' },
   { value: 'SMARTWATCH', label: 'SMARTWATCH' },
 ];
+
+
 
 const Agendar: React.FC = () => {
   const { refreshData } = useContext(AppContext);
@@ -106,19 +109,33 @@ const Agendar: React.FC = () => {
       await axios.post<PostAgendamento>('http://localhost:8080/agendamentos', postAgendamento);
       setMessage({ type:'success', text: 'Agendamento criado com sucesso' });
       refreshData();
-    } catch (error) {
-      setMessage({ type: 'error', text: 'Erro ao criar agendamento' });
+    } catch (error) {      
+      setMessage({ type: 'error', text: 'Erro ao criar agendamento' });    
     }
   };
 
   return (
-    <div>
+    <div className="container">
+      <LogoComponent />
       <h2>Agendar</h2>
+      <div className="form-container-agendar">
       <form onSubmit={handleAgendamentoSubmit}>
         <div>
           <label>
             CPF: 
-            <input type="text" name='cpf' value={postAgendamento.cliente.cpf} required onChange={handleAgendamentoChange}/>
+            <input placeholder="CPF" type="text" name='cpf' value={postAgendamento.cliente.cpf} required onChange={handleAgendamentoChange}/>
+          </label>
+        </div>
+        <div>
+          <label>
+            Equipamento: 
+            <select name='equipamento' value={postAgendamento.equipamento} required onChange={handleAgendamentoChange}>
+              {EQUIPAMENTOS.map(equipamento => (
+                <option key={equipamento.value} value={equipamento.value}>
+                  {equipamento.label}
+                </option>
+              ))}
+              </select>
           </label>
         </div>
         <div>
@@ -155,21 +172,13 @@ const Agendar: React.FC = () => {
             </label>
           </div>
         )}
-        <div>
-          <label>
-            Equipamento: 
-            <select name='equipamento' value={postAgendamento.equipamento} required onChange={handleAgendamentoChange}>
-              {EQUIPAMENTOS.map(equipamento => (
-                <option key={equipamento.value} value={equipamento.value}>
-                  {equipamento.label}
-                </option>
-              ))}
-              </select>
-          </label>
-        </div>
         <button type='submit'>Cadastrar Agendamento</button>
       </form>
+              </div>
+              <div className="espaco-final">
+
       {message && <div className={`message ${message.type}`}>{message.text}</div>}
+              </div>
     </div>
   );
 };

@@ -4,6 +4,7 @@ import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { AppContext } from '../context/AppContext';
 import { PostCliente } from '../shared/interfaces';
+import LogoComponent from './LogoComponent';
 
 const Registrar: React.FC = () => {
   const { refreshData } = useContext(AppContext);
@@ -28,41 +29,41 @@ const Registrar: React.FC = () => {
       setMessage({ type: 'success', text: 'Cliente registrado com sucesso' });
       refreshData();
       setCliente({ nome: '', cpf: '' }); // Reset form
-    } catch (error) {
-      setMessage({ type: 'error', text: 'Erro ao registrar cliente' });
+    } catch (error) {       
+      setMessage({ type: 'error', text: "Erro ao registrar cliente"});      
     }
   };
 
   return (
-    <div>
+    <div className='container'>
+      <LogoComponent />
       <h2>Registrar Cliente</h2>
+      <div className='form-container'>
+
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>
-            Nome:
+        <div >
             <input 
               type="text" 
               name="nome" 
               value={cliente.nome} 
               onChange={handleChange} 
               required 
-            />
-          </label>
+              placeholder='Nome'
+              />
         </div>
         <div>
-          <label>
-            CPF:
             <input 
               type="text" 
               name="cpf" 
               value={cliente.cpf} 
               onChange={handleChange} 
               required 
-            />
-          </label>
+              placeholder='CPF'
+              />
         </div>
-        <button type="submit">Registrar</button>
+        <button type="submit">Cadastrar</button>
       </form>
+              </div>
       {message && <div className={`message ${message.type}`}>{message.text}</div>}
     </div>
   );

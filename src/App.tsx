@@ -1,5 +1,5 @@
 
-
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import React, { useState } from 'react';
 import './App.css';
 import { AppProvider } from './context/AppContext';
