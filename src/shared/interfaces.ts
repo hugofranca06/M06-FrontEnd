@@ -9,7 +9,7 @@ export interface Assistencia {
 		data: string,
 		id: number
   }
-  export interface Cliente {
+  export interface Clientes {
     nome: string, 
     cpf: string   
   }
@@ -48,5 +48,10 @@ export interface Assistencia {
       }
       horario: string
       equipamento: string    
+  }
+
+  export interface HorarioOption {
+    value: string;
+    label: string;
   }
 
