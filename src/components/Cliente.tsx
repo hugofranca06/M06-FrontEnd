@@ -13,6 +13,7 @@ const Cliente: React.FC = () => {
   const [agendamento, setAgendamento] = useState<Agendamento | null>(null);  
   const [message, setMessage] = useState<{type: 'success' | 'error'; text: string} | null>(null);
   const [agendamentosPorCpf, setAgendamentosPorCpf] = useState<Agendamento[]>([]);
+  const [showConfirmation, setShowConfirmation] = useState<{ show: boolean, idAgendamento: number | null }>({ show: false, idAgendamento: null });
   
   
 
@@ -38,7 +39,17 @@ const Cliente: React.FC = () => {
       refreshData();
     } catch (error) {
       setMessage({ type: 'error', text: 'Agendamento não encontrado' });
+    } finally {
+      setShowConfirmation({ show: false, idAgendamento: null})
     }
+  };
+
+  const confirmCancelamento = (idAgendamento: number) => {
+    setShowConfirmation({ show: true, idAgendamento });
+  };
+
+  const cancelConfirmation = () => {
+    setShowConfirmation({ show: false, idAgendamento: null });
   };
 
   const formatDate = (isoString:string) => {
@@ -55,15 +66,15 @@ const Cliente: React.FC = () => {
       
       <nav className='sub-aba'>
         <button onClick={() => setActiveSubTab('novoAgendamento')} className='sub-menu'>Novo Agendamento</button>
-        <button onClick={() => setActiveSubTab('cancelarAgendamento')} className='sub-menu'>Cancelar Agendamento</button>
-        <button onClick={() => setActiveSubTab('buscarAgendamento')} className='sub-menu'>Meus Agendamentos</button>
+        <button onClick={() => setActiveSubTab('cancelarAgendamento')} className='sub-menu'>Meus Agendamentos</button>
+        {/* <button onClick={() => setActiveSubTab('buscarAgendamento')} className='sub-menu'>Meus Agendamentos</button> */}
       </nav>
 
-      {activeSubTab === 'novoAgendamento' && <Agendar />}
+      {activeSubTab == 'novoAgendamento' &&  <Agendar />}
 
       {activeSubTab === 'cancelarAgendamento' && (
         <div className='card-t'>
-        <h3>Cancelar Agendamento por CPF</h3>
+        <h3>Buscar Agendamento</h3>
         <div className='form-container'>
 
         <input 
@@ -75,11 +86,10 @@ const Cliente: React.FC = () => {
         <button onClick={handleBuscarAgendamento}>Buscar</button>
           </div>
         <div className='card-container'>
-          {message && <div className={`message ${message.type}`}>{message.text}</div>}
         {agendamentosPorCpf.map(agendamento => (
           <div key={agendamento.idAgendamento} className='card'>
             <div className='botao-cancelar'>
-            <button onClick={() => handleCancelarAgendamento(agendamento.idAgendamento)}>
+            <button onClick={() => confirmCancelamento(agendamento.idAgendamento)}>
               <i className='fas fa-ban'></i>
             </button>
             </div>
@@ -90,9 +100,19 @@ const Cliente: React.FC = () => {
           </div>
         ))}
         </div>
+        {message && <div className={`message ${message.type}`}>{message.text}</div>}
       </div>
       )}
+      
+        {showConfirmation.show && (
+        <div className="confirmation-popup">
+          <p>Tem certeza que deseja cancelar este agendamento?</p>
+          <button onClick={() => handleCancelarAgendamento(showConfirmation.idAgendamento!)}>Sim</button>
+          <button onClick={cancelConfirmation}>Não</button>
+        </div>
 
+      )}
+{/* 
       {activeSubTab === 'buscarAgendamento' && (
         <div>
           <h3>Buscar Agendamento por CPF</h3>
@@ -114,9 +134,9 @@ const Cliente: React.FC = () => {
           {message && <div className={`message ${message.type}`}>{message.text}</div>}
         </div>
         
-      )}
+      )} */}
 
-      {message && <div className={`message ${message.type}`}>{message.text}</div>}
+      
     </div>
   );
 };

@@ -9,7 +9,7 @@ const Home: React.FC = () => {
       <div className='container-section'>
 
       <div className='section'>
-        <img src='/src/components/img/img.png' alt="" className='section-image'/>
+        <img src='/src/components/img/agend.png' alt="" className='section-image'/>
         <div className='content'>
           <h2>Marque seu agendamento</h2>
           <p>Marque seu agendamento</p>
@@ -32,7 +32,7 @@ const Home: React.FC = () => {
         </Link>
           </div>
         </div> 
-        <img src='/src/components/img/img.png' alt="" className='section-image'/>
+        <img src='/src/components/img/assist3.png' alt="" className='section-image'/>
       </div>
       </div>
     </div>

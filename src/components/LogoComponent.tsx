@@ -1,4 +1,4 @@
-import logo from '/src/components/img/logo.png';
+import logo from '/src/components/img/logo4.png';
 import React from 'react';
 
 const LogoComponent: React.FC = () => {

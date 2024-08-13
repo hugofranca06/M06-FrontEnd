@@ -8,7 +8,7 @@ import LogoComponent from "./LogoComponent";
 
 // Defina as opções de equipamentos como uma constante
 const EQUIPAMENTOS = [
-  { value: '', label: 'Selecione um equipamento' },
+  { value: '', label: '' },
   { value: 'TV', label: 'TV' },
   { value: 'SMARTPHONE', label: 'SMARTPHONE' },
   { value: 'MICROONDAS', label: 'MICROONDAS' },
@@ -121,10 +121,8 @@ const Agendar: React.FC = () => {
       <div className="form-container-agendar">
       <form onSubmit={handleAgendamentoSubmit}>
         <div>
-          <label>
-            CPF: 
             <input placeholder="CPF" type="text" name='cpf' value={postAgendamento.cliente.cpf} required onChange={handleAgendamentoChange}/>
-          </label>
+          
         </div>
         <div>
           <label>
@@ -142,7 +140,7 @@ const Agendar: React.FC = () => {
           <label>
             Assistência:
             <select name='assistencia' onChange={handleAgendamentoChange} required>
-              <option value="">Selecione uma assistência</option>
+              <option value=""></option>
               {assistencias.map(assistencia => (
                 <option key={assistencia.id} value={assistencia.id}>
                   {assistencia.nome}

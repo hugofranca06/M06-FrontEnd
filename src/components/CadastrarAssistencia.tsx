@@ -60,32 +60,28 @@ const CadastrarAssistencia: React.FC = () => {
 
       <form onSubmit={handleAssistenciaSubmit}>
         <div>
-          <label>
-            Nome: 
-            <input type="text" name='nome' value={postAssistencia.nome} required onChange={handleAssistenciaChange}/>
-          </label>
+          
+            <input placeholder="Nome" type="text" name='nome' value={postAssistencia.nome} required onChange={handleAssistenciaChange}/>
+          
         </div>
         <div>
-            <label>
-              Início de expediente: 
+            
               <select name='inicioExpediente' value={postAssistencia.inicioExpediente} required onChange={handleAssistenciaChange}>
-                <option value="">Selecione</option>
+                <option value="">Início do Expediente</option>
                 {opcoesHora.map((time, index) => (
                   <option key={index} value={time}>{time}</option>
                 ))}
               </select>
-            </label>
+            
           </div>
           <div>
-            <label>
-              Fim de expediente: 
+           
               <select name='fimExpediente' value={postAssistencia.fimExpediente} required onChange={handleAssistenciaChange}>
-                <option value="">Selecione</option>
+                <option value="">Fim de expediente</option>
                 {opcoesHora.map((time, index) => (
                   <option key={index} value={time}>{time}</option>
                 ))}
               </select>
-            </label>
           </div>
         <button type="submit">Cadastrar Assistência</button>
       </form>

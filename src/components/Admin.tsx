@@ -61,6 +61,7 @@ const Admin: React.FC = () => {
               <p className='card-text'>Cliente: {agendamento.cliente.nome}</p>
               <p className='card-text'>Data: {formatDate(agendamento.horario)}</p>
               <p className='card-text'>Equipamento: {agendamento.equipamento}</p>
+              <p className='card-text'>Assistência: {agendamento.assistencia.nome}</p>
             </div>
           ))}
           </div>

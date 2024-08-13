@@ -2,14 +2,16 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Verdana, Geneva, Tahoma, sans-serif; 
 }
 
 body {
-  font-family: Arial, sans-serif;
   padding-top: 60px;
   margin: 0;
   display: flex;
   justify-content: center;  
+  background: linear-gradient(to bottom,#528394, #6b9dad, #8ab3c0 );
+  font-family: Verdana, Geneva, Tahoma, sans-serif; 
   
 }
 
@@ -44,17 +46,19 @@ header {
 
 .nav-item {
   padding: 8px 15px;
-  background-color: #f0f0f0;
+  background-color: #8ab3c0;
   border-radius: 8px;
   cursor: pointer;
-  color: #333;
+  color: #001215;
   transition: background-color 0.3s;
+  font-weight: 545;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .nav-item-admin {
   padding: 10px 15px;
   margin-right: 10px;
-  background-color: #f0f0f0;
+  background-color: #2a4954;
   border-radius: 8px;
   cursor: pointer;
   color: #333;
@@ -63,13 +67,18 @@ header {
 
 
 .nav-item:hover {
-  background-color: #e0e0e0;
-  color: #333;
+  background-color: #2a4954;
+  color: #fff;
 }
 
 .nav-item.active {
-  background-color: #333;
+  background-color: #2a4954;
   color: #fff;
+}
+
+.nav-item.active:hover {
+  background-color: #c8dfe8;
+  color: #001215;
 }
 
 @media screen and (max-width: 768px) {
@@ -121,8 +130,7 @@ header {
 
 
 .card {
-  background-color: #fff;
-  border: 1px solid #e0e0e0;
+  background-color: #aac9d3;
   border-radius: 8px;
   padding: 20px;
   text-align: left;
@@ -142,19 +150,21 @@ header {
 }
 
 .card-title {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   margin-bottom: 10px;
-  color: #333;
+  color: #000000;
+  font-family: Verdana, Geneva, Tahoma, sans-serif; 
 }
 
 .card-text {
-  font-size: 1rem;
-  color: #666;
+  font-size: 0.96rem;
+  color: #000000;
+  font-family: Verdana, Geneva, Tahoma, sans-serif; 
 }
 
 .sub-menu {
   padding: 5px 16px;
-  background-color: #3a3939;
+  background-color: #132d34;
   border-radius: 6px;
   cursor: pointer;
   color: #ffffff;
@@ -163,9 +173,9 @@ header {
 }
 
 .sub-menu:hover {
-  background-color: #e0e0e0;
+  background-color: #2a4954;
   border-color: #333;
-  color: #333;
+  color: #ffffff;
 }
 
 .sub-aba {
@@ -181,9 +191,8 @@ header {
   max-width: 400px; /* Limita a largura máxima do formulário */
   margin: 0 auto; /* Centraliza o formulário horizontalmente */
   padding: 50px 20px; /* Espaçamento interno */
-  border: 1px solid #ddd; /* Borda leve ao redor do formulário */
   border-radius: 8px; /* Cantos arredondados */
-  background-color: #f9f9f9; /* Cor de fundo do formulário */
+  background-color: #aac9d3; /* Cor de fundo do formulário */
   margin-bottom: 40px;
 }
 
@@ -242,9 +251,9 @@ header {
   max-width: 400px; /* Limita a largura máxima do formulário */
   margin: 0 auto; /* Centraliza o formulário horizontalmente */
   padding: 50px 20px; /* Espaçamento interno */
-  border: 1px solid #ddd; /* Borda leve ao redor do formulário */
+  /*border: 1px solid #ddd;  Borda leve ao redor do formulário */
   border-radius: 8px; /* Cantos arredondados */
-  background-color: #f9f9f9; /* Cor de fundo do formulário */
+  background-color: #aac9d3; /* Cor de fundo do formulário */
   margin-bottom: 90px;
 }
 
@@ -276,7 +285,7 @@ header {
 }
 
 .form-container-agendar button {
-  background-color: #1f1f20; /* Cor de fundo do botão */
+  background-color: #2a4954; /* Cor de fundo do botão */
   color: white; /* Cor do texto do botão */
   border: none; /* Remove a borda padrão do botão */
   padding: 10px; /* Espaçamento interno do botão */
@@ -293,7 +302,7 @@ header {
 
 /* Estilo do botão ao passar o mouse */
 .form-container-agendar button:hover {
-  background-color: #4e4c4c; /* Cor de fundo ao passar o mouse */
+  background-color: #3e6674; /* Cor de fundo ao passar o mouse */
 }
 
 .espaco-final {
@@ -349,18 +358,19 @@ header {
 
 
 .logo-container {
-  background-color: #f0f0f0; /* Cor de fundo cinza */
+   /*background-color: #aac9d3; Cor de fundo cinza */
   padding: 10px;
   border-radius: 8px;
+  width: 920px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 60px;
 }
 
 .logo {
-  max-width: 400px; /* Ajuste o tamanho da logo conforme necessário */
+  max-width: 600px; /* Ajuste o tamanho da logo conforme necessário */
   height: auto;
 }
 
@@ -369,6 +379,7 @@ header {
   align-items: center;
   gap: 20px; /* Espaço entre imagem e conteúdo */
 }
+
 
 .content {
   flex-direction: column;
@@ -380,7 +391,8 @@ header {
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Espaço entre as seções */
+  gap: 40px; /* Espaço entre as seções */
+  background-color: #8ab3c0;
 }
 
 .container-section h2 {
@@ -390,8 +402,8 @@ header {
 .section-button {
   display: block;
   width: fit-content;
-  padding: 10px 20px;
-  background-color: #808080;
+  padding: 8px 20px;
+  background-color: #2a4954;
   color: white;
   border: none;
   border-radius: 5px;
@@ -422,4 +434,46 @@ header {
   .section:nth-child(2) {
     flex-direction: column-reverse;
   }
+}
+
+.confirmation-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  z-index: 1000; /* Certifica-se de que a popup fique sobreposta a outros elementos */
+  width: 300px;
+  text-align: center;
+}
+
+.confirmation-popup p {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #333;
+}
+
+.confirmation-popup button {
+  margin: 5px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.confirmation-popup button:first-of-type {
+  background-color: #dc3545; /* Cor do botão de "Sim" */
+  color: #fff;
+}
+
+.confirmation-popup button:last-of-type {
+  background-color: #6c757d; /* Cor do botão de "Não" */
+  color: #fff;
+}
+
+.confirmation-popup button:hover {
+  opacity: 0.9;
 }
