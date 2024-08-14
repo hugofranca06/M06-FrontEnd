@@ -1,5 +1,3 @@
-// src/components/Agendar.tsx
-
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { PostAgendamento , HorarioOption, Assistencia } from "../shared/interfaces";
@@ -15,9 +13,13 @@ const EQUIPAMENTOS = [
   { value: 'SMARTWATCH', label: 'SMARTWATCH' },
 ];
 
+interface AgendarProps {
+  exibirLogo?: boolean;
+}
 
 
-const Agendar: React.FC = () => {
+
+const Agendar: React.FC<AgendarProps> = ({exibirLogo = true}) => {
   const { refreshData } = useContext(AppContext);
   const [postAgendamento, setPostAgendamento] = useState<PostAgendamento>({
     cliente: { cpf: '' },
@@ -116,7 +118,7 @@ const Agendar: React.FC = () => {
 
   return (
     <div className="container">
-      <LogoComponent />
+      {exibirLogo && <LogoComponent />}
       <h2>Agendar</h2>
       <div className="form-container-agendar">
       <form onSubmit={handleAgendamentoSubmit}>

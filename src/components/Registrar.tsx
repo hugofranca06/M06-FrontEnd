@@ -1,5 +1,3 @@
-// src/components/Registrar.tsx
-
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { AppContext } from '../context/AppContext';
