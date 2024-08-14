@@ -14,131 +14,149 @@ const Admin: React.FC = () => {
   const [agendamentosPorData, setAgendamentosPorData] = useState<Agendamento[]>([]);
   const [message, setMessage] = useState<{type: 'success' | 'error'; text: string} | null>(null);
 
-  const handleBuscarPorData = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8080/agendamentos/listarDatas?data=${dataFiltro}`);
+  const handleSubTabChange = (tab: string) => {
+    setMessage(null);
+    setAgendamentosPorData([]);
+    setIdAgendamento('');
+    setDataFiltro('');
+    setAgendamentoFiltrado(null);
+
+    setActiveSubTab(tab);
+  }
+
+const handleBuscarPorData = async () => {
+  try {
+    const response = await axios.get(`http://localhost:8080/agendamentos/listarDatas?data=${dataFiltro}`);
+    if(response.data.length === 0) {
+      setAgendamentosPorData([]);
+      setMessage({type: 'error', text: 'Não encontrado agendamentos nessa data'})
+    } else {
       setAgendamentosPorData(response.data);    
-    } catch (error) {
-      setMessage({type: 'error', text: 'Não encontrada agendamentos nessa data'})
+      setMessage(null);
     }
-  };
+  } catch (error) {
+    setAgendamentosPorData([]);
+    setMessage({type: 'error', text: 'Erro ao buscar agendamento'})
+  }
+};
 
-  const handleBuscarPorId = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8080/agendamentos/${idAgendamento}`);
-      setAgendamentoFiltrado(response.data);
-      setMessage({type: 'success' , text: ''});
-      refreshData();
-    } catch (error) {      
-      setMessage({type: 'error' , text: 'Agendamento não encontrado'});
-      
-    }
-  };
+const handleBuscarPorId = async () => {
+  try {
+    const response = await axios.get(`http://localhost:8080/agendamentos/${idAgendamento}`);
+    setAgendamentoFiltrado(response.data);
+    setMessage(null);
+    refreshData();
+  } catch (error) {   
+    setAgendamentoFiltrado(null)   
+    setMessage({type: 'error' , text: 'Agendamento não encontrado'});
+    
+  }
+};
 
-  const formatDate = (isoString:string) => {
-    const date = new Date(isoString);
-    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' };
-    return date.toLocaleDateString('pt-BR', options);
-  };
+const formatDate = (isoString:string) => {
+  const date = new Date(isoString);
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+  return date.toLocaleDateString('pt-BR', options);
+};
 
-  return (
-    <div  className='container'>
-      <LogoComponent />
-      <nav className='sub-aba'>
-        <button onClick={() => setActiveSubTab('listaAgendamentos')} className='sub-menu'>Lista de Agendamentos</button>
-        <button onClick={() => setActiveSubTab('listaClientes')} className='sub-menu'>Lista de Clientes</button>
-        <button onClick={() => setActiveSubTab('buscarPorData')} className='sub-menu'>Buscar por Data</button>
-        <button onClick={() => setActiveSubTab('buscarPorId')} className='sub-menu'>Buscar por ID</button>
-      </nav>
+return (
+  <div  className='container'>
+    <LogoComponent />
+    <nav className='sub-aba'>
+      <button onClick={() => handleSubTabChange('listaAgendamentos')} className='sub-menu'>Lista de Agendamentos</button>
+      <button onClick={() => handleSubTabChange('listaClientes')} className='sub-menu'>Lista de Clientes</button>
+      <button onClick={() => handleSubTabChange('buscarPorData')} className='sub-menu'>Buscar por Data</button>
+      <button onClick={() => handleSubTabChange('buscarPorId')} className='sub-menu'>Buscar por ID</button>
+    </nav>
 
-      {activeSubTab === 'listaAgendamentos' && (
-        <div className='card-t'>
-          <h3>Agendamentos</h3>
-          <div className='card-container'>
-          {agendamentos.map(agendamento => (
-            <div key={agendamento.idAgendamento} className='card'>
-              <p className='card-title'>ID: {agendamento.idAgendamento}</p>
-              <p className='card-text'>Cliente: {agendamento.cliente.nome}</p>
-              <p className='card-text'>Data: {formatDate(agendamento.horario)}</p>
-              <p className='card-text'>Equipamento: {agendamento.equipamento}</p>
-              <p className='card-text'>Assistência: {agendamento.assistencia.nome}</p>
-            </div>
-          ))}
+    {activeSubTab === 'listaAgendamentos' && (
+      <div className='card-t'>
+        <h3>Agendamentos</h3>
+        <div className='card-container'>
+        {agendamentos.map(agendamento => (
+          <div key={agendamento.idAgendamento} className='card'>
+            <p className='card-title'>ID: {agendamento.idAgendamento}</p>
+            <p className='card-text'>Cliente: {agendamento.cliente.nome}</p>
+            <p className='card-text'>Data: {formatDate(agendamento.horario)}</p>
+            <p className='card-text'>Equipamento: {agendamento.equipamento}</p>
+            <p className='card-text'>Assistência: {agendamento.assistencia.nome}</p>
           </div>
+        ))}
         </div>
-      )}
+      </div>
+    )}
 
-      {activeSubTab === 'listaClientes' && (
-        <div className='card-t'>
-          <h3>Clientes</h3>
-          <div className='card-container-cliente'>
-          {clientes.map(cliente => (
-            <div key={cliente.cpf} className='card'>
-              <p className='card-title'>{cliente.nome}</p>
-              <p className='card-text'>CPF: {cliente.cpf}</p>
-            </div>
-          ))}
+    {activeSubTab === 'listaClientes' && (
+      <div className='card-t'>
+        <h3>Clientes</h3>
+        <div className='card-container-cliente'>
+        {clientes.map(cliente => (
+          <div key={cliente.cpf} className='card'>
+            <p className='card-title'>{cliente.nome}</p>
+            <p className='card-text'>CPF: {cliente.cpf}</p>
           </div>
+        ))}
         </div>
-      )}
+      </div>
+    )}
 
-      {activeSubTab === 'buscarPorData' && (
-        <div className='card-t'>
-          <h3>Buscar Agendamentos por Data</h3>   
-          <div className='form-container'>
-          <input
-            type="date" 
-            value={dataFiltro} 
-            onChange={(e) => setDataFiltro(e.target.value)}
-            />            
-          <button onClick={handleBuscarPorData}>Buscar</button>        
-            </div>       
-            <div className='card-t'>
-              <h3>Agendamentos Encontrados</h3>           
-              <div className='card-container'>
-          {agendamentosPorData.map(agendamento => (
-            <div key={agendamento.idAgendamento} className='card'>
-              <p className='card-title'>ID: {agendamento.idAgendamento}</p>
-              <p className='card-text'>Cliente: {agendamento.cliente.nome}</p>
-              <p className='card-text'>Data: {formatDate(agendamento.horario)}</p>
-            </div>
-            ))}
-            </div>
-            </div>
-            {message && <div className={`message ${message.type}`}>{message.text}</div>}
-        </div>
-      )}
-
-      {activeSubTab === 'buscarPorId' && (
-        <div className='card-t'>
-          <h3>Buscar Agendamento por ID</h3>
-          <div className='form-container'>
-          <input 
-            type="text" 
-            value={idAgendamento} 
-            onChange={(e) => setIdAgendamento(e.target.value)}
-            placeholder='ID'
-            />
-          <button onClick={handleBuscarPorId}>Buscar</button>
-            </div>
-            <div className='card-t'>
-              <h3>Agendamento Encontrado</h3>
-              <div className='card-container'>
-          {agendamentoFiltrado && (
-            <div className='card'>
-              <p className='card-title'>ID: {agendamentoFiltrado.idAgendamento}</p>
-              <p className='card-text'>Cliente: {agendamentoFiltrado.cliente.nome}</p>
-              <p className='card-text'>Data: {formatDate(agendamentoFiltrado.horario)}</p>
-              <p className='card-text'>Equipamento: {agendamentoFiltrado.equipamento}</p>
-            </div>
-          )}
+    {activeSubTab === 'buscarPorData' && (
+      <div className='card-t'>
+        <h3>Buscar Agendamentos por Data</h3>   
+        <div className='form-container'>
+        <input
+          type="date" 
+          value={dataFiltro} 
+          onChange={(e) => setDataFiltro(e.target.value)}
+          />            
+        <button onClick={handleBuscarPorData}>Buscar</button>        
+          </div>       
+          <div className='card-t'>
+            <h3>Agendamentos Encontrados</h3>           
+            <div className='card-container'>
+        {agendamentosPorData.map(agendamento => (
+          <div key={agendamento.idAgendamento} className='card'>
+            <p className='card-title'>ID: {agendamento.idAgendamento}</p>
+            <p className='card-text'>Cliente: {agendamento.cliente.nome}</p>
+            <p className='card-text'>Data: {formatDate(agendamento.horario)}</p>
+          </div>
+          ))}
           </div>
           </div>
           {message && <div className={`message ${message.type}`}>{message.text}</div>}
+      </div>
+    )}
+
+    {activeSubTab === 'buscarPorId' && (
+      <div className='card-t'>
+        <h3>Buscar Agendamento por ID</h3>
+        <div className='form-container'>
+        <input 
+          type="text" 
+          value={idAgendamento} 
+          onChange={(e) => setIdAgendamento(e.target.value)}
+          placeholder='ID'
+          />
+        <button onClick={handleBuscarPorId}>Buscar</button>
+          </div>
+          <div className='card-t'>
+            <h3>Agendamento Encontrado</h3>
+            <div className='card-container'>
+        {agendamentoFiltrado && (
+          <div className='card'>
+            <p className='card-title'>ID: {agendamentoFiltrado.idAgendamento}</p>
+            <p className='card-text'>Cliente: {agendamentoFiltrado.cliente.nome}</p>
+            <p className='card-text'>Data: {formatDate(agendamentoFiltrado.horario)}</p>
+            <p className='card-text'>Equipamento: {agendamentoFiltrado.equipamento}</p>
+          </div>
+        )}
         </div>
-      )}
-    </div>
-  );
+        </div>
+        {message && <div className={`message ${message.type}`}>{message.text}</div>}
+      </div>
+    )}
+  </div>
+ );
 };
 
 export default Admin;

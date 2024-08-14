@@ -1,5 +1,3 @@
-// src/components/CadastrarAssistencia.tsx
-
 import React, { useState, useContext } from "react";
 import { PostAssistencia } from "../shared/interfaces";
 import axios from "axios";
